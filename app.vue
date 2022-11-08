@@ -7,6 +7,16 @@ td {
 em {
   color: yellow;
 }
+.highlight-0 {
+  color: red;
+  font: bold;
+  font-weight: bolder;
+}
+.highlight-1 {
+  color: green;
+  font: bold;
+  font-weight: bolder;
+}
 </style>
 <template>
   <input type="text" placeholder="Keywords" v-model="query" /><button
@@ -29,22 +39,50 @@ em {
         <td>
           <Highlighter
             class="my-highlight"
-            :style="{ color: 'black' }"
             highlightClassName="highlight"
             :searchWords="query?.split(',') || []"
             :autoEscape="true"
             :textToHighlight="book.title"
-          />
+            v-slot="items"
+          >
+            <div>
+              <template v-for="{ chunk, text, attrs } in items">
+                <span
+                  v-if="chunk.highlight"
+                  v-bind="attrs"
+                  :key="attrs.key"
+                  :class="['highlight-' + query.split(',').indexOf(text)]"
+                  >{{ text }}</span
+                >
+                <template v-else
+                  ><span :style="{ color: 'black' }">{{ text }}</span></template
+                >
+              </template>
+            </div>
+          </Highlighter>
         </td>
         <td>
           <Highlighter
             class="my-highlight"
-            :style="{ color: 'black' }"
             highlightClassName="highlight"
             :searchWords="query?.split(',') || []"
             :autoEscape="true"
             :textToHighlight="book.description"
-          />
+            v-slot="items"
+          >
+            <template v-for="{ chunk, text, attrs } in items">
+              <span
+                v-if="chunk.highlight"
+                v-bind="attrs"
+                :key="attrs.key"
+                :class="['highlight-' + query.split(',').indexOf(text)]"
+                >{{ text }}</span
+              >
+              <template v-else
+                ><span :style="{ color: 'black' }">{{ text }}</span></template
+              >
+            </template>
+          </Highlighter>
         </td>
         <td>{{ book.authors }}</td>
         <td>{{ book.publisher }}</td>
