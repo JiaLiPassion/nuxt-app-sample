@@ -3,6 +3,7 @@ table,
 th,
 td {
   border: 1px solid;
+  overflow-y: scroll;
 }
 em {
   color: yellow;
@@ -160,7 +161,7 @@ div.highlight {
 <script setup>
 import Highlighter from "vue-highlight-words";
 
-const max = 200;
+const max = 50;
 const query = ref("");
 const itemCount = ref(0);
 let timer;
@@ -268,11 +269,7 @@ const { data: books, refresh } = await useAsyncData("books", async () => {
             const mapped = {
               ...book._source,
               description:
-                book.highlight?.description
-                  ?.join("SEPARATOR")
-                  .replaceAll("<em>", "")
-                  .replaceAll("</em>", "") ||
-                substract(book._source?.description),
+                book._source?.description.substring(0, 100) + "......",
               id: book._id,
             };
             console.log("mapped", mapped);

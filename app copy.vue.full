@@ -267,12 +267,7 @@ const { data: books, refresh } = await useAsyncData("books", async () => {
             console.log("book", book);
             const mapped = {
               ...book._source,
-              description:
-                book.highlight?.description
-                  ?.join("SEPARATOR")
-                  .replaceAll("<em>", "")
-                  .replaceAll("</em>", "") ||
-                substract(book._source?.description),
+              description: book._source?.description,
               id: book._id,
             };
             console.log("mapped", mapped);
