@@ -89,7 +89,13 @@ div.highlight {
                 :textToHighlight="book.title"
                 v-slot="items"
               >
-                <div>
+                <div
+                  :style="{
+                    'text-decoration': 'underline',
+                    cursor: 'pointer',
+                  }"
+                  @click="open(book)"
+                >
                   <template v-for="{ chunk, text, attrs } in items">
                     <span
                       v-if="chunk.highlight"
@@ -99,9 +105,12 @@ div.highlight {
                       >{{ text }}</span
                     >
                     <template v-else
-                      ><span :style="{ color: 'black' }">{{
-                        text
-                      }}</span></template
+                      ><span
+                        :style="{
+                          color: 'black',
+                        }"
+                        >{{ text }}</span
+                      ></template
                     >
                   </template>
                 </div>
@@ -165,6 +174,10 @@ const query = ref("");
 const itemCount = ref(0);
 let timer;
 let countQuerying = false;
+
+function open(book) {
+  window.open(`details/${book.title}`);
+}
 
 async function keyup(event) {
   console.log("keyEvent", event);
